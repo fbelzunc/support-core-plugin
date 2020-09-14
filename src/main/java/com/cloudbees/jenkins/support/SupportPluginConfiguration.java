@@ -24,14 +24,20 @@
 
 package com.cloudbees.jenkins.support;
 
+import com.cloudbees.jenkins.support.api.Component;
+import com.cloudbees.jenkins.support.util.Persistence;
 import hudson.Extension;
 import hudson.model.ManagementLink;
 import hudson.model.Saveable;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.WebMethod;
+import org.kohsuke.stapler.export.Exported;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Support Plugin Configuration
@@ -64,8 +70,15 @@ public class SupportPluginConfiguration extends ManagementLink implements Saveab
         return "supportCoreConfiguration";
     }
 
+    @SuppressWarnings("unused") // used by Jelly
+    @Exported
+    @WebMethod(name = "components")
+    public List<Component> getComponents() {
+        return SupportPlugin.getComponents();
+    }
+
     @Override
     public void save() throws IOException {
-
+        Persistence.save(this);
     }
 }
